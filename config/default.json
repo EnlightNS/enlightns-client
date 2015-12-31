@@ -5,5 +5,8 @@
       "endpoint":"/api-token-auth/",
       "method":"POST"
     }
+  },
+  "Config":{
+    "filename":"/.ens-config"
   }
 }

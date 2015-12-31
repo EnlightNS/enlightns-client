@@ -4,7 +4,7 @@ var remote = require('remote');
 var config = remote.require('config');
 
 var utils = require('./js/utils');
-var log_file = __dirname + 'logs/login.log';
+
 
 
 //form event listener
@@ -15,7 +15,7 @@ form.addEventListener('submit', function(ev) {
     var login = form.querySelector('input[name="login"]');
     var pass = form.querySelector('input[name="password"]');
 
-    auth_api_config = config.get("Api.auth");
+    var config_file = __dirname + config.get("Config.filename");
 
     //send post request
     utils.performRequest(
@@ -26,7 +26,8 @@ form.addEventListener('submit', function(ev) {
             password: pass.value
         },
         function(data) {
-            console.log('Logged in:', data);
+            var configArray = utils.readConfig(config_file);
+            console.log('Logged in:', configArray, data);
         });
 
 });
