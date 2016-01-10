@@ -1,3 +1,4 @@
+
 //load the main process
 var remote = require('remote');
 
@@ -7,6 +8,7 @@ var querystring = require('querystring');
 var https = require('https');
 var fs = require('fs');
 var path = require('path');
+
 
 //perform http request
 function performRequest(host, endpoint, method, data, success) {
@@ -28,7 +30,7 @@ function performRequest(host, endpoint, method, data, success) {
         headers: headers
     };
 
-    //console.log(options);
+    //console.log("options", options);
 
     //setup the request
     var req = https.request(options, function(res) {
@@ -37,21 +39,28 @@ function performRequest(host, endpoint, method, data, success) {
         var responseString = '';
 
         res.on('data', function(data) {
-            //console.log("data:" + data);
+            console.log("data:" + data);
             responseString += data;
         });
 
         res.on('end', function() {
             console.log("Response:" + responseString);
-            var responseObject = JSON.parse(responseString);
-            success(responseObject);
+            try {
+                var parsed = JSON.parse(responseString);
+            } catch (err) {
+                console.error('Unable to parse response as JSON', err);
+                return err;
+            }
+            return success(null, {
+                token: parsed.token
+            });
         });
-    });
 
+
+    });
     //handle the error
-    req.on('error', function(e) {
-        console.error('error');
-        console.error(e);
+    req.on('error', function(err) {
+        console.error('Https request error', err);
     });
 
 
@@ -63,48 +72,34 @@ function performRequest(host, endpoint, method, data, success) {
 
 //read config
 function readConfig(filename){
-
-    var myConfig, data = null;
-
-    fs.stat(filename, function(err, stat) {
-        if(err == null) {
-            console.log('File exists');
-            data = fs.readFileSync(filename),
-                myConfig;
-        } else if(err.code == 'ENOENT') {
-            fs.writeFile('log.txt', 'Some log\n');
-        } else {
-            console.log('Some other error: ', err.code);
-        }
-    });
-
-
-
+    var data;
     try {
-        myConfig = JSON.parse(data);
-        console.dir(myConfig);
+        fs.accessSync(filename, fs.F_OK, function (err) {
+
+                data = fs.readFileSync(filename, 'utf8', function (err) {
+                    if (err) {
+                        console.log("Error reading config file ... ", err);
+                        return;
+                    }
+                    console.log("Reading File");
+                });
+                return data;
+        });
     }
-    catch (err) {
-        console.log('There has been an error parsing your JSON.')
-        console.log(err);
+    catch(err){
+        console.log("File does not exist");
+        return data;
     }
 
-    return myConfig;
 }
 
 //write config
 function writeConfig(filename, config){
+    console.log("write started ... ");
     var data = JSON.stringify(config);
-
-    fs.writeFile(filename, data, function (err) {
-        if (err) {
-            console.log('There has been an error saving your configuration data.');
-            console.log(err.message);
-            return;
-        }
-        console.log('Configuration saved successfully.')
-    });
-
+    console.log("stringify started ... ");
+    fs.writeFileSync(filename, data, "utf8");
+    console.log('Configuration saved successfully.');
 }
 
 

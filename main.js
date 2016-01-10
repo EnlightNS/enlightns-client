@@ -1,9 +1,9 @@
 /**
  * Created by syawar on 26/12/15.
  */
-var app = require('app')
+var app = require('app');
 
-var BrowserWindow = require('browser-window')
+var BrowserWindow = require('browser-window');
 
 app.on('ready', function(){
 
@@ -20,5 +20,5 @@ app.on('ready', function(){
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
 
-})
+});
 
