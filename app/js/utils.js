@@ -72,27 +72,7 @@ function performRequest(host, endpoint, method, data, success) {
 
 //read config
 function readConfig(filename, success){
-    //var data;
-    //fs.accessSync(filename, fs.F_OK, function (err) {
-    //        if (err) {
-    //            console.log("Error reading config file ... ", err);
-    //            return;
-    //        }
-    //        data = fs.readFileSync(filename, 'utf8', function (error) {
-    //            if (error) {
-    //                console.log("Error reading config file ... ", error);
-    //                return;
-    //            }
-    //            console.log("Reading File");
-    //        });
-    //        try {
-    //            var parsed = JSON.parse(data);
-    //        } catch (err) {
-    //            console.error('Unable to parse response as JSON', err);
-    //            return err;
-    //        }
-    //        return success(null, parsed);
-    //});
+
     var parsed;
     try {
 
