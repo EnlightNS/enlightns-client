@@ -37,7 +37,7 @@ form.addEventListener('submit', function(ev) {
         var apiEndPoint = config.get('Api.auth.endpoint');
         var apiReqMethod = config.get('Api.auth.method');
 
-        console.log("Vals:", apiHost, apiEndPoint, apiReqMethod);
+        //console.log("Vals:", apiHost, apiEndPoint, apiReqMethod);
         //send post request
         utils.performRequest( apiHost, apiEndPoint, apiReqMethod,
             {

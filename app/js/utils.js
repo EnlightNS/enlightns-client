@@ -44,7 +44,7 @@ function performRequest(host, endpoint, method, data, success) {
         });
 
         res.on('end', function() {
-            console.log("Response:" + responseString);
+            //console.log("Response:" + responseString);
             try {
                 var parsed = JSON.parse(responseString);
             } catch (err) {
@@ -71,33 +71,53 @@ function performRequest(host, endpoint, method, data, success) {
 
 
 //read config
-function readConfig(filename){
-    var data;
+function readConfig(filename, success){
+    //var data;
+    //fs.accessSync(filename, fs.F_OK, function (err) {
+    //        if (err) {
+    //            console.log("Error reading config file ... ", err);
+    //            return;
+    //        }
+    //        data = fs.readFileSync(filename, 'utf8', function (error) {
+    //            if (error) {
+    //                console.log("Error reading config file ... ", error);
+    //                return;
+    //            }
+    //            console.log("Reading File");
+    //        });
+    //        try {
+    //            var parsed = JSON.parse(data);
+    //        } catch (err) {
+    //            console.error('Unable to parse response as JSON', err);
+    //            return err;
+    //        }
+    //        return success(null, parsed);
+    //});
+    var parsed;
     try {
-        fs.accessSync(filename, fs.F_OK, function (err) {
 
-                data = fs.readFileSync(filename, 'utf8', function (err) {
-                    if (err) {
-                        console.log("Error reading config file ... ", err);
-                        return;
-                    }
-                    console.log("Reading File");
-                });
-                return data;
+        var data = fs.readFileSync(filename, 'utf8', function (error) {
+            if (error) {
+                console.log("Error reading config file ... ", error);
+                return;
+            }
+            console.log("Reading File");
         });
+        parsed = JSON.parse(data);
+
+    } catch (err) {
+        console.error('Unable to parse response as JSON', err);
     }
-    catch(err){
-        console.log("File does not exist");
-        return data;
-    }
+
+    return parsed;
 
 }
 
 //write config
 function writeConfig(filename, config){
-    console.log("write started ... ");
+    //console.log("write started ... ");
     var data = JSON.stringify(config);
-    console.log("stringify started ... ");
+    //console.log("stringify started ... ");
     fs.writeFileSync(filename, data, "utf8");
     console.log('Configuration saved successfully.');
 }
