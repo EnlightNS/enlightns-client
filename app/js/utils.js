@@ -11,9 +11,13 @@ var path = require('path');
 
 
 //perform http request
-function performRequest(host, endpoint, method, data, success) {
+function performRequest(host, custom_headers, endpoint, method, data, success) {
     var dataString = JSON.stringify(data);
     var headers = {};
+
+    if (typeof custom_headers != undefined && custom_headers){
+        headers = custom_headers;
+    }
 
     if (method == 'GET') {
         endpoint += '?' + querystring.stringify(data);
@@ -23,6 +27,7 @@ function performRequest(host, endpoint, method, data, success) {
             'Content-Length': dataString.length
         };
     }
+
     var options = {
         host: host,
         path: endpoint,

@@ -8,5 +8,10 @@
   },
   "Config":{
     "filename":"/.ens-config"
+  },
+  "record_list":{
+        "host":"api.enlightns.com",
+        "endpoint":"/user/record/",
+        "method":"GET"
   }
 }
