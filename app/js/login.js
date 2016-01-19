@@ -1,9 +1,13 @@
 //get common config
+
+const ipcRenderer = require('electron').ipcRenderer;
+var BrowserWindow = require('electron').remote.BrowserWindow;
 var remote = require('remote');
 
 var config = remote.require('config');
 
 var utils = require('./js/utils');
+
 
 
 
@@ -67,12 +71,18 @@ form.addEventListener('submit', function(ev) {
     }
 
     if (isLoggedIn && authKey){
+        console.log("Starting records!!!");
+        //add the jwt authorization
         customHeader ={
             "Authorization": authKey
         };
+
+        //get the proper config
         var apiRecordHost = config.get('Api.record_list.host');
         var apiRecordEndPoint = config.get('Api.record_list.endpoint');
         var apiRecordReqMethod = config.get('Api.record_list.method');
+
+        //http request
         utils.performRequest( apiRecordHost, customHeader, apiRecordEndPoint, apiRecordReqMethod,
             {},
             function(err, data) {
@@ -80,6 +90,8 @@ form.addEventListener('submit', function(ev) {
                     console.log("Request process error:", err);
                 }
                 console.log('Record List:', data);
+                //console.log(ipcRenderer.sendSync("show-records", data));
+
             }
         );
 

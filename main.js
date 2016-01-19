@@ -1,9 +1,13 @@
 /**
  * Created by syawar on 26/12/15.
  */
-var app = require('app');
+var app = require('electron').app;
+const ipcMain = require('electron').ipcMain;
 
-var BrowserWindow = require('browser-window');
+var BrowserWindow = require('electron').BrowserWindow;
+
+//main window vairable
+var mainWindow = null;
 
 app.on('ready', function(){
 
@@ -19,6 +23,14 @@ app.on('ready', function(){
 
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
+
+    //create records windows
+
+    ipcMain.on("show-records", function(event, arg){
+        console.log("recieved data:", arg);
+        mainWindow.loadURL('file:///' + __dirname + '/app/records_list.html');
+        event.returnValue = 'pong';
+    });
 
 });
 
