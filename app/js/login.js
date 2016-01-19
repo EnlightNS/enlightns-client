@@ -20,13 +20,15 @@ form.addEventListener('submit', function(ev) {
     var config_file = __dirname + config.get("Config.filename");
     var configObj = utils.readConfig(config_file);
     var isLoggedIn = false;
-
+    var authKey = "";
+    var customHeader = {};
     //console.log("1", isLoggedIn, configObj);
 
     if ( configObj ){
         if ( configObj.hasOwnProperty('token') ){
             isLoggedIn = true;
             console.log("Token Exists!!!");
+            authKey = configObj.token;
         }
     }
 
@@ -36,7 +38,6 @@ form.addEventListener('submit', function(ev) {
         var apiHost = config.get('Api.auth.host');
         var apiEndPoint = config.get('Api.auth.endpoint');
         var apiReqMethod = config.get('Api.auth.method');
-        var customHeader = {}
 
         //console.log("Vals:", apiHost, apiEndPoint, apiReqMethod);
         //send post request
@@ -50,14 +51,38 @@ form.addEventListener('submit', function(ev) {
                     console.log("Request process error:", err);
                 }
                 console.log('Logged in:', configObj, data);
+                if ( configObj.hasOwnProperty('token') ){
+                    isLoggedIn = true;
+                    console.log("Token Retrieved!!!");
+                    authKey = configObj.token;
+                }
                 utils.writeConfig(config_file, data);
             }
         );
 
         console.log("Write done!!!");
     } else {
-        console.log(configObj);
+        //console.log(configObj);
         console.log("Already Logged in");
+    }
+
+    if (isLoggedIn && authKey){
+        customHeader ={
+            "Authorization": authKey
+        };
+        var apiRecordHost = config.get('Api.record_list.host');
+        var apiRecordEndPoint = config.get('Api.record_list.endpoint');
+        var apiRecordReqMethod = config.get('Api.record_list.method');
+        utils.performRequest( apiRecordHost, customHeader, apiRecordEndPoint, apiRecordReqMethod,
+            {},
+            function(err, data) {
+                if (err) {
+                    console.log("Request process error:", err);
+                }
+                console.log('Record List:', data);
+            }
+        );
+
     }
 
 

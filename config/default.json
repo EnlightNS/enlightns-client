@@ -4,14 +4,15 @@
       "host":"api.enlightns.com",
       "endpoint":"/api-token-auth/",
       "method":"POST"
+    },
+    "record_list":{
+      "host":"api.enlightns.com",
+      "endpoint":"/user/record/",
+      "method":"GET"
     }
   },
   "Config":{
     "filename":"/.ens-config"
-  },
-  "record_list":{
-        "host":"api.enlightns.com",
-        "endpoint":"/user/record/",
-        "method":"GET"
   }
+
 }
