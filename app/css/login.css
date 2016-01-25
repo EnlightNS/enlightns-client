@@ -1,38 +1,287 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto:400);
+/* 
+==========================================================================
+RESET
+========================================================================== 
+*/
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+   */
+
+   html, body, div, span, applet, object, iframe,
+   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+   a, abbr, acronym, address, big, cite, code,
+   del, dfn, em, img, ins, kbd, q, s, samp,
+   small, strike, strong, sub, sup, tt, var,
+   b, u, i, center,
+   dl, dt, dd, ol, ul, li,
+   fieldset, form, label, legend,
+   table, caption, tbody, tfoot, thead, tr, th, td,
+   article, aside, canvas, details, embed, 
+   figure, figcaption, footer, header, hgroup, 
+   menu, nav, output, ruby, section, summary,
+   time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
 body {
-  background-color:#fff;
-  -webkit-font-smoothing: antialiased;
-  font: normal 14px Roboto,arial,sans-serif;
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
-.container {
-    padding: 25px;
-    position: fixed;
+/* 
+==========================================================================
+IMPORT
+========================================================================== 
+*/
+
+@import url(http://fonts.googleapis.com/css?family=Roboto:400);
+@import url(https://fonts.googleapis.com/css?family=Pacifico);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+/* 
+==========================================================================
+BASE
+========================================================================== 
+*/
+
+* { -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; -o-box-sizing:border-box; box-sizing:border-box; }
+
+html { width: 100%; height:100%; overflow:hidden; }
+
+body {
+    width: 100%;
+    height:100%;
+    font-family: 'Open Sans', sans-serif;
+    position: relative;
+    margin: auto;
+    padding: 60px 60px;
+    background: url("../img/background.jpg") no-repeat center center #505050;   
+    background-size: cover;
 }
 
-.form-login {
-    background-color: #EDEDED;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
-    border-radius: 15px;
-    border-color:#d2d2d2;
-    border-width: 5px;
-    box-shadow:0 1px 0 #cfcfcf;
-}
+/* 
+==========================================================================
+FONTS
+========================================================================== 
+*/
 
-h4 { 
- border:0 solid #fff; 
- border-bottom-width:1px;
- padding-bottom:10px;
- text-align: center;
-}
-
-.form-control {
-    border-radius: 10px;
-}
-
-.wrapper {
+h1 {
+    font-size: 40px;
+    font-family: 'Pacifico', cursive !important;
+    color: white;
     text-align: center;
+    margin: 130px 0 30px 0;
+}
+
+/* 
+==========================================================================
+CONTAINER
+========================================================================== 
+*/
+
+
+body,
+.signin {
+  background-color: #d3d3d3;
+  font-family: 'Montserrat', sans-serif;
+  color: #fff;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.login {
+  position: relative;
+  height: 560px;
+  width: 405px;
+  margin: auto;
+  padding: 60px 60px;
+  background: url("../img/background.jpg") no-repeat center center #505050;
+  background-size: cover;
+  box-shadow: 0px 30px 60px -5px #000;
+}
+
+form {
+  padding-top: 80px;
+}
+
+.active {
+  border-bottom: 2px solid #1161ed;
+}
+
+h2 {
+  padding-left: 12px;
+  font-size: 22px;
+  text-transform: uppercase;
+  padding-bottom: 5px;
+  letter-spacing: 2px;
+  display: inline-block;
+  font-weight: 100;
+}
+
+h2:first-child {
+  padding-left: 0px;
+}
+
+span {
+  text-transform: uppercase;
+  font-size: 12px;
+  opacity: 0.4; 
+  display: inline-block;
+  position: relative;
+  top: -65px;
+  transition: all 0.5s ease-in-out;
+}
+
+.text {
+  border: none;
+  width: 100%;
+  float: left;
+  padding: 10px 20px;
+  display: block;
+  height: 15px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0);
+  overflow: hidden;
+  margin-top: 15px;
+  margin-bottom: 20px;
+  transition: all 0.5s ease-in-out;
+}
+
+.text:focus {
+  outline: 0;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0);
+}
+
+.text:focus + span {
+  opacity: 0.6;
+}
+
+input[type="text"],
+input[type="password"] {
+  font-family: 'Montserrat', sans-serif;
+  color: #fff;
+}
+
+input {
+  font-size: 14px;
+}
+
+h2,
+span,
+.custom-checkbox {
+  margin-left: 20px;
+}
+
+.custom-checkbox {
+  -webkit-appearance: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 8px;
+  border-radius: 2px;
+  display: inline-block;
+  position: relative;
+  top: 6px;
+}
+
+.custom-checkbox:checked {
+  background-color: rgba(17, 97, 237, 1);
+}
+
+.custom-checkbox:checked:after {
+  content: '\2714';
+  font-size: 10px;
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  color: #fff;
+}
+
+.custom-checkbox:focus {
+  outline: none;
+}
+
+label {
+  display: inline-block;
+  padding-top: 10px;
+  padding-left: 5px;
+  color: #F5F5F5;
+}
+
+.signin {
+  background-color: #1161ed;
+  color: #FFF;
+  width: 100%;
+  padding: 10px 20px;
+  display: block;
+  height: 39px;
+  border-radius: 20px;
+  margin-top: 30px;
+  transition: all 0.5s ease-in-out;
+  border: none;
+  text-transform: uppercase;
+}
+
+.input-label {
+    float: left;
+    margin: 10px 0 10px 0;
+    padding: 0;
+    top: 0;
+}
+
+.signin:hover {
+  background: #4082f5;
+  cursor: pointer;
+  box-shadow: 0px 4px 35px -5px #4082f5;
+}
+
+.signin:focus {
+  outline: none;
+}
+
+hr {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  top: 40px;
+  position: relative;
+}
+
+a {
+  text-align: center;
+  display: block;
+  top: 12px;
+  font-size: 13px;
+  position: relative;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+a:hover {
+    color: rgba(255, 255, 255, 1);
+    transition: all 0.5s ease-in-out;
 }
