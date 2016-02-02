@@ -100,6 +100,7 @@ function readConfig(filename, success){
 
 //write config
 function writeConfig(filename, config){
+    console.log("config", config);
     //console.log("write started ... ");
     var data = JSON.stringify(config);
     //console.log("stringify started ... ");
