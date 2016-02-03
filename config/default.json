@@ -3,7 +3,8 @@
     "auth":{
       "host":"api.enlightns.com",
       "endpoint":"/api-token-auth/",
-      "method":"POST"
+      "method":"POST",
+      "URL":"https://api.enlightns.com/api-token-auth/"
     },
     "record_list":{
       "host":"api.enlightns.com",

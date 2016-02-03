@@ -7,6 +7,10 @@ var utils = require('./js/utils');
 
 var async = require('async');
 
+var request = require('sync-request');
+
+var querystring = require('querystring');
+
 
 
 //form event listener
@@ -20,70 +24,123 @@ form.addEventListener('submit', function(ev) {
     //console.log(login.value, pass.value);
 
     var config_file = __dirname + config.get("Config.filename");
-    var configObj = utils.readConfig(config_file);
+    var configObj = "";
+    utils.readConfig(config_file, function(err, configRet){
+        if(err){
+            console.log("config read error");
+        }
+        configObj = configRet;
+    });
     var isLoggedIn = false;
     var authKey = "";
     var customHeader = {};
+    data = {};
     //console.log("1", isLoggedIn, configObj);
 
-    if ( configObj ){
-        if ( configObj.hasOwnProperty('token') ){
+    if (configObj) {
+        if (configObj.hasOwnProperty('token')) {
             isLoggedIn = true;
             console.log("Token Exists!!!");
             authKey = configObj.token;
         }
     }
-    async.series([
-        function(callback) {
-            async.parallel([
-                //Load posts
-                function(callback) {
-                    if (!isLoggedIn) {
-                        var apiHost = config.get('Api.auth.host');
-                        var apiEndPoint = config.get('Api.auth.endpoint');
-                        var apiReqMethod = config.get('Api.auth.method');
+    async.waterfall([
+            function(callback) {
+                if (!isLoggedIn) {
+                    var apiHost = config.get('Api.auth.host');
+                    var apiEndPoint = config.get('Api.auth.endpoint');
+                    var apiReqMethod = config.get('Api.auth.method');
+                    var apiReqURL = config.get('Api.auth.URL');
+                    var dataString = JSON.stringify(data);
+                    var headers = {};
 
-                        //console.log("Vals:", apiHost, apiEndPoint, apiReqMethod);
-                        //send post request
-                        utils.performRequest(apiHost, customHeader, apiEndPoint, apiReqMethod,
-                            {
-                                email: login.value,
-                                password: pass.value
-                            },
-                            function (err, data) {
-                                if (err) {
-                                    console.log("Request process error:", err);
-                                }
-                                console.log('Logged in:', configObj, data);
-                                if (typeof configObj != undefined && configObj && configObj.hasOwnProperty('token')) {
-                                    isLoggedIn = true;
-                                    console.log("Token Retrieved!!!");
-                                    authKey = configObj.token;
+                    data = {
+                        email: login.value,
+                        password: pass.value
+                    };
 
-                                } else {
-                                    console.log("Improper Credentials");
-                                }
-                                utils.writeConfig(config_file, data);
-                                console.log("Write done!!!");
-                                callback();
+                    headers = {
+                        'Content-Type': 'application/json',
+                        'Content-Length': dataString.length
+                    };
 
-                            }
-                        );
+                    //perfrom request
+                    var res = request(apiReqMethod, apiReqURL, {
+                      json: data
+                    }, function(err){
+                        if (err){
+                            callback(err);
+                        }
+                    });
 
+                    var token = JSON.parse(res.getBody('utf8'))["token"];
+                    callback(null, token);
 
-                    }
-                },
-                //Load photos
-                function(callback) {
-                    console.log("was here!!!");
                 }
-            ], callback);
+
+            },
+            function(token, callback) {
+                console.log("was here!!!", token);
+                callback(null, token);
+            }
+        ],
+        function(err, result) {
+            if (err) {
+                console.log("An error happened", err);
+            }
         }
-    ], function(err) {
-        if (err){
-            console.log("An error happened", err);
-        }
-    });
+    );
+    // async.series([
+    //     function(callback) {
+    //         async.waterfall([
+    //             //Load posts
+    //             function(callback) {
+    //                 if (!isLoggedIn) {
+    //                     var apiHost = config.get('Api.auth.host');
+    //                     var apiEndPoint = config.get('Api.auth.endpoint');
+    //                     var apiReqMethod = config.get('Api.auth.method');
+    //
+    //                     //console.log("Vals:", apiHost, apiEndPoint, apiReqMethod);
+    //                     //send post request
+    //                     var dataString = utils.performRequest(apiHost, customHeader, apiEndPoint, apiReqMethod,
+    //                         {
+    //                             email: login.value,
+    //                             password: pass.value
+    //                         });
+    //                         // function (err, data) {
+    //                         //     if (err) {
+    //                         //         console.log("Request process error:", err);
+    //                         //     }
+    //                         //     console.log('Logged in:', configObj, data);
+    //                         //     if (typeof configObj != undefined && configObj && configObj.hasOwnProperty('token')) {
+    //                         //         isLoggedIn = true;
+    //                         //         console.log("Token Retrieved!!!");
+    //                         //         authKey = configObj.token;
+    //                         //
+    //                         //     } else {
+    //                         //         console.log("Improper Credentials");
+    //                         //     }
+    //                         //     utils.writeConfig(config_file, data);
+    //                         //     console.log("Write done!!!");
+    //                         //
+    //                         //
+    //                         // }
+    //                     // );
+    //                     callback(null, dataString);
+    //
+    //                 }
+    //             },
+    //             //Load photos
+    //             function(dataString, acallback) {
+    //                 console.log("was here!!!", dataString);
+    //             }
+    //         ], callback);
+    //     }
+    // ], function(err) {
+    //     if (err){
+    //         console.log("An error happened", err);
+    //     }
+    // });
 
     //console.log("2 ", isLoggedIn, configObj);
 

@@ -11,7 +11,7 @@ var path = require('path');
 
 
 //perform http request
-function performRequest(host, custom_headers, endpoint, method, data, success) {
+function performRequest(host, custom_headers, endpoint, method, data, callback) {
     var dataString = JSON.stringify(data);
     var headers = {};
 
@@ -38,7 +38,10 @@ function performRequest(host, custom_headers, endpoint, method, data, success) {
     //console.log("options", options);
 
     //setup the request
-    var req = https.request(options, function(res) {
+    var req = https.request(options, function(err, res) {
+        if(err){
+            callback(err);
+        }
         res.setEncoding('utf-8');
 
         var responseString = '';
@@ -56,9 +59,7 @@ function performRequest(host, custom_headers, endpoint, method, data, success) {
                 console.error('Unable to parse response as JSON', err);
                 return err;
             }
-            return success(null, {
-                token: parsed.token
-            });
+            callback(null, {token: parsed.token});
         });
 
 
@@ -66,6 +67,7 @@ function performRequest(host, custom_headers, endpoint, method, data, success) {
     //handle the error
     req.on('error', function(err) {
         console.error('Https request error', err);
+        callback(err);
     });
 
 
@@ -76,7 +78,7 @@ function performRequest(host, custom_headers, endpoint, method, data, success) {
 
 
 //read config
-function readConfig(filename, success){
+function readConfig(filename, callback){
 
     var parsed;
     try {
@@ -84,7 +86,7 @@ function readConfig(filename, success){
         var data = fs.readFileSync(filename, 'utf8', function (error) {
             if (error) {
                 console.log("Error reading config file ... ", error);
-                return;
+                callback(error);
             }
             console.log("Reading File");
         });
@@ -94,7 +96,7 @@ function readConfig(filename, success){
         console.error('Unable to parse response as JSON', err);
     }
 
-    return parsed;
+    callback(null, parsed);
 
 }
 
