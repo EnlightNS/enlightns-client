@@ -94,6 +94,7 @@ function readConfig(filename, callback){
 
     } catch (err) {
         console.error('Unable to parse response as JSON', err);
+        callback(err);
     }
 
     callback(null, parsed);
@@ -101,13 +102,28 @@ function readConfig(filename, callback){
 }
 
 //write config
-function writeConfig(filename, config){
+function writeConfig(filename, config, callback){
     console.log("config", config);
-    //console.log("write started ... ");
-    var data = JSON.stringify(config);
-    //console.log("stringify started ... ");
-    fs.writeFileSync(filename, data, "utf8");
-    console.log('Configuration saved successfully.');
+    var written = false;
+    try {
+        //console.log("write started ... ");
+        var data = JSON.stringify(config);
+        //console.log("stringify started ... ");
+        fs.writeFileSync(filename, data, "utf8", function (error) {
+            if (error) {
+                console.log("Error writing config file ... ", error);
+                callback(error);
+            }
+            console.log("Writing File");
+        });
+        console.log('Configuration saved successfully.');
+        written = true;
+    } catch (err) {
+        console.error('Unable to stringify JSON', err);
+        callback(err);
+    }
+
+    callback(null, written);
 }
 
 

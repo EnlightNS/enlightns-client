@@ -25,13 +25,14 @@ form.addEventListener('submit', function(ev) {
 
     var config_file = __dirname + config.get("Config.filename");
     var configObj = "";
-    utils.readConfig(config_file, function(err, configRet){
-        if(err){
+    utils.readConfig(config_file, function(err, configRet) {
+        if (err) {
             console.log("config read error");
         }
         configObj = configRet;
     });
     var isLoggedIn = false;
+    var writeConfig = false;
     var authKey = "";
     var customHeader = {};
     data = {};
@@ -45,7 +46,8 @@ form.addEventListener('submit', function(ev) {
         }
     }
     async.waterfall([
-            function(callback) {
+            function(callback) { //if user is not logged in, check config to login
+                var token = "";
                 if (!isLoggedIn) {
                     var apiHost = config.get('Api.auth.host');
                     var apiEndPoint = config.get('Api.auth.endpoint');
@@ -66,23 +68,45 @@ form.addEventListener('submit', function(ev) {
 
                     //perfrom request
                     var res = request(apiReqMethod, apiReqURL, {
-                      json: data
-                    }, function(err){
-                        if (err){
+                        json: data
+                    }, function(err) {
+                        if (err) {
                             callback(err);
                         }
                     });
 
-                    var token = JSON.parse(res.getBody('utf8'))["token"];
-                    callback(null, token);
+                    token = JSON.parse(res.getBody('utf8'));
+                    writeConfig = true;
+
 
                 }
+                callback(null, token);
 
             },
-            function(token, callback) {
-                console.log("was here!!!", token);
-                callback(null, token);
-            }
+            function(token, callback) { // write config file if user logged in for the first time
+                // console.log("was here!!!", token);
+                var config_written = false;
+                if (!isLoggedIn && writeConfig) {
+                    utils.writeConfig(config_file, token, function(err, written) {
+                        if (err) {
+                            console.log("config write error");
+                            callback(err);
+                        }
+                        config_written = written;
+                    });
+                }
+                console.log("config write:", config_file);
+                callback(null, config_written);
+            },
+            function(config_written, callback) { // write config file if user logged in for the first time
+                // console.log("Checking if logged in");
+                var showRecords = false;
+                if (true) {
+                    console.log("temptations");
+                };
+                callback(null, config_written);
+            },
+
         ],
         function(err, result) {
             if (err) {
@@ -90,6 +114,9 @@ form.addEventListener('submit', function(ev) {
             }
         }
     );
+
+    //
+    // callback(null);
     // async.series([
     //     function(callback) {
     //         async.waterfall([
