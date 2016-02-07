@@ -35,7 +35,7 @@ form.addEventListener('submit', function(ev) {
     var writeConfig = false;
     var authKey = "";
     var customHeader = {};
-    data = {};
+    var data = {};
     //console.log("1", isLoggedIn, configObj);
 
     if (configObj) {
@@ -97,15 +97,7 @@ form.addEventListener('submit', function(ev) {
                 }
                 console.log("config write:", config_file);
                 callback(null, config_written);
-            },
-            function(config_written, callback) { // write config file if user logged in for the first time
-                // console.log("Checking if logged in");
-                var showRecords = false;
-                if (true) {
-                    console.log("temptations");
-                };
-                callback(null, config_written);
-            },
+            }
 
         ],
         function(err, result) {
@@ -115,87 +107,48 @@ form.addEventListener('submit', function(ev) {
         }
     );
 
-    //
-    // callback(null);
-    // async.series([
-    //     function(callback) {
-    //         async.waterfall([
-    //             //Load posts
-    //             function(callback) {
-    //                 if (!isLoggedIn) {
-    //                     var apiHost = config.get('Api.auth.host');
-    //                     var apiEndPoint = config.get('Api.auth.endpoint');
-    //                     var apiReqMethod = config.get('Api.auth.method');
-    //
-    //                     //console.log("Vals:", apiHost, apiEndPoint, apiReqMethod);
-    //                     //send post request
-    //                     var dataString = utils.performRequest(apiHost, customHeader, apiEndPoint, apiReqMethod,
-    //                         {
-    //                             email: login.value,
-    //                             password: pass.value
-    //                         });
-    //                         // function (err, data) {
-    //                         //     if (err) {
-    //                         //         console.log("Request process error:", err);
-    //                         //     }
-    //                         //     console.log('Logged in:', configObj, data);
-    //                         //     if (typeof configObj != undefined && configObj && configObj.hasOwnProperty('token')) {
-    //                         //         isLoggedIn = true;
-    //                         //         console.log("Token Retrieved!!!");
-    //                         //         authKey = configObj.token;
-    //                         //
-    //                         //     } else {
-    //                         //         console.log("Improper Credentials");
-    //                         //     }
-    //                         //     utils.writeConfig(config_file, data);
-    //                         //     console.log("Write done!!!");
-    //                         //
-    //                         //
-    //                         // }
-    //                     // );
-    //                     callback(null, dataString);
-    //
-    //                 }
-    //             },
-    //             //Load photos
-    //             function(dataString, acallback) {
-    //                 console.log("was here!!!", dataString);
-    //             }
-    //         ], callback);
-    //     }
-    // ], function(err) {
-    //     if (err){
-    //         console.log("An error happened", err);
-    //     }
-    // });
-
-    //console.log("2 ", isLoggedIn, configObj);
+    if (authKey){
+           var data = {};
+           var apiRecordHost = config.get('Api.record_list.host');
+           var apiRecordEndPoint = config.get('Api.record_list.endpoint');
+           var apiRecordReqMethod = config.get('Api.record_list.method');
+           var apiRecordReqURL = config.get('Api.record_list.URL');
+           var dataString = JSON.stringify(data);
 
 
-    //} else {
-    //    //console.log(configObj);
-    //    console.log("Already Logged in");
-    //    if (authKey){
-    //        customHeader ={
-    //            "Authorization": authKey
-    //        };
-    //        var apiRecordHost = config.get('Api.record_list.host');
-    //        var apiRecordEndPoint = config.get('Api.record_list.endpoint');
-    //        var apiRecordReqMethod = config.get('Api.record_list.method');
-    //        utils.performRequest( apiRecordHost, customHeader, apiRecordEndPoint, apiRecordReqMethod,
-    //            {},
-    //            function(err, data) {
-    //                if (err) {
-    //                    console.log("Request process error:", err);
-    //                }
-    //                console.log('Record List:', data);
-    //            }
-    //        );
-    //
-    //    }
-    //}
+           async.waterfall([
+                function(callback){
+                    //perfrom request
+                    console.log("Testing ... ", apiRecordReqMethod, apiRecordReqURL);
+                    var res = request(apiRecordReqMethod, apiRecordReqURL, {
+                        "headers": {
+                            "Authorization": authKey
+                        }
+                    }, function(err) {
+                        if (err) {
+                            callback(err);
+                        }
+                    });
 
 
+                    records_list = JSON.parse(res.getBody('utf8'));
+
+                    console.log("List of records:", JSON.stringify(records_list, null, 2));
+
+                    callback(null, records_list);
+                }
+            ],
+               function(err, result) {
+                   if (err) {
+                       console.log("An error happened while reading"+
+                       " the record list", err);
+                   }
+               }
+           );
+
+
+
+     }
 
 
 });
