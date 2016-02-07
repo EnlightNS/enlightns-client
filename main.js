@@ -3,7 +3,7 @@
  */
 var app = require('app');
 
-var BrowserWindow = require('browser-window');
+const BrowserWindow = require('electron').BrowserWindow;
 
 const ipcMain = require('electron').ipcMain;
 
@@ -28,11 +28,21 @@ app.on('ready', function(){
         mainWindow = null;
     });
 
-});
+    ipcMain.on('sync-records', function(event, arg) {
+      console.log(arg);
+      // load the index.html
+      var recordWindow = new BrowserWindow({
+          width:800,
+          height:600,
+          icon: __dirname + '/app/img/logo.png'
+      });
 
-ipcMain.on('synchronous-message', function(event, arg) {
-  console.log(arg);  // prints "ping"
-  event.returnValue = 'pong';
-  //load
-  mainWindow.loadURL('file:///' + __dirname + '/app/ind2.html');
+      // load the index.html
+      recordWindow.loadURL('file:///' + __dirname + '/app/ind2.html');
+      event.returnValue = recordWindow;
+
+
+    });
+
+
 });

@@ -13,6 +13,9 @@ var querystring = require('querystring');
 
 const ipcRenderer = require('electron').ipcRenderer;
 
+const BrowserWindow = require('electron').remote.BrowserWindow;
+
+
 
 var isLoggedIn = false;
 
@@ -25,7 +28,6 @@ form.addEventListener('submit', function(ev) {
     var pass = form.querySelector('input[name="password"]');
 
     //console.log(login.value, pass.value);
-
     var config_file = __dirname + config.get("Config.filename");
     var configObj = "";
     utils.readConfig(config_file, function(err, configRet) {
@@ -142,7 +144,8 @@ form.addEventListener('submit', function(ev) {
                 },
                 function(record_list, callback){
                     console.log("Logged IN!!!");
-                    console.log(ipcRenderer.sendSync('synchronous-message', 'ping'));
+                    var recordWindow = ipcRenderer.sendSync('sync-records', 'Loading records');
+                    recordWindow.show();
                 }
             ],
                function(err, result) {
