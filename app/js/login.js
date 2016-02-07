@@ -11,7 +11,10 @@ var request = require('sync-request');
 
 var querystring = require('querystring');
 
+const ipcRenderer = require('electron').ipcRenderer;
 
+
+var isLoggedIn = false;
 
 //form event listener
 var form = document.querySelector('form');
@@ -31,7 +34,7 @@ form.addEventListener('submit', function(ev) {
         }
         configObj = configRet;
     });
-    var isLoggedIn = false;
+
     var writeConfig = false;
     var authKey = "";
     var customHeader = {};
@@ -136,6 +139,10 @@ form.addEventListener('submit', function(ev) {
                     console.log("List of records:", JSON.stringify(records_list, null, 2));
 
                     callback(null, records_list);
+                },
+                function(record_list, callback){
+                    console.log("Logged IN!!!");
+                    console.log(ipcRenderer.sendSync('synchronous-message', 'ping'));
                 }
             ],
                function(err, result) {
