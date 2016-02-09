@@ -18,6 +18,8 @@ app.on('ready', function(){
         icon: __dirname + '/app/img/logo.png'
     });
 
+
+
     // load the index.html
     mainWindow.loadURL('file:///' + __dirname + '/app/index.html');
 
@@ -28,21 +30,24 @@ app.on('ready', function(){
         mainWindow = null;
     });
 
+    //load records window
     ipcMain.on('sync-records', function(event, arg) {
-      console.log(arg);
-      // load the index.html
-      var recordWindow = new BrowserWindow({
-          width:800,
-          height:600,
-          icon: __dirname + '/app/img/logo.png'
-      });
+        console.log(arg);
+        // load the records window
+        var recordWindow = new BrowserWindow({
+            width:800,
+            height:600,
+            icon: __dirname + '/app/img/logo.png'
+        });
 
-      // load the index.html
-      recordWindow.loadURL('file:///' + __dirname + '/app/ind2.html');
-      event.returnValue = recordWindow;
+        //load the DevTools
+        recordWindow.webContents.openDevTools();
 
-
+        // load the index.html
+        recordWindow.loadURL('file:///' + __dirname + '/app/records.html');
+        event.returnValue = recordWindow;
     });
+
 
 
 });

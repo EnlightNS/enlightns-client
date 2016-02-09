@@ -16,7 +16,7 @@ const ipcRenderer = require('electron').ipcRenderer;
 const BrowserWindow = require('electron').remote.BrowserWindow;
 
 
-
+var listRecords = null;
 var isLoggedIn = false;
 
 //form event listener
@@ -162,3 +162,8 @@ form.addEventListener('submit', function(ev) {
 
 
 });
+
+//export module variables
+module.exports = {
+    listRecords: listRecords
+}
