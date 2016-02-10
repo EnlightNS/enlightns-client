@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Records</title>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/sel-switch.css" rel="stylesheet">
+
+</head>
+<body>
+<!--Pulling Awesome Font -->
+<select id="ip"></select>
+<h2>Select an interface</h2>
+<hr />
+Please select an ip:
+<select id="slct1" name="slct1" onchange="populate(this.id, 'slct2')">
+   <option value=""></option>
+   <option value="LAN">LAN</option>
+   <option value="WLAN">WLAN</option>
+</select>
+<hr />
+   Choose a record to update:
+<div id="slct2"></div>
+<hr />
+
+<script src='js/records.js'></script>
+
+</body>
+</html>

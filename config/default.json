@@ -11,6 +11,10 @@
       "endpoint":"/user/record/",
       "method":"GET",
       "URL":"https://api.enlightns.com/user/record/"
+    },
+    "public_ip":{
+      "method":"GET",
+      "URL":"https://api.enlightns.com/tools/whatismyip/"
     }
   },
   "Config":{
