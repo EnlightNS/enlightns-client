@@ -20,9 +20,6 @@ var listRecords = null;
 var isLoggedIn = false;
 
 
-el = document.getElementById("loginModal");
-el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
-
 
 //form event listener
 var form = document.querySelector('form');

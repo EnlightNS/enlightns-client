@@ -30,18 +30,21 @@
 			<p>A basic modal dialog with minimal styling and no additional options. There are a few CSS properties set internally by SimpleModal, however, SimpleModal relies mostly on style options and/or external CSS for the look and feel.</p>
 			<input type='button' name='basic' value='Demo' class='basic'/> or <a href='#' class='basic'>Demo</a>
 		</div>
-		
+
 		<!-- modal content -->
 		<div id="basic-modal-content">
-			<h3>Basic Modal Dialog</h3>
-			<p>For this demo, SimpleModal is using this "hidden" data for its content. You can also populate the modal dialog with an AJAX response, standard HTML or DOM element(s).</p>
-			<p>Examples:</p>
-			<p><code>$('#basicModalContent').modal(); // jQuery object - this demo</code></p>
-			<p><code>$.modal(document.getElementById('basicModalContent')); // DOM</code></p>
-			<p><code>$.modal('&lt;p&gt;&lt;b&gt;HTML&lt;/b&gt; elements&lt;/p&gt;'); // HTML</code></p>
-			<p><code>$('&lt;div&gt;&lt;/div&gt;').load('page.html').modal(); // AJAX</code></p>
-		
-			<p><a href='http://www.ericmmartin.com/projects/simplemodal/'>More details...</a></p>
+			<form method="/" id="login-form">
+			    <p><input type="text" name="login" value="" placeholder="Email"></p>
+			    <p><input type="password" name="password" value="" placeholder="Password"></p>
+			    <p class="remember_me">
+			        <label>
+			            <input type="checkbox" name="remember_me" id="remember_me">
+			            Remember me on this computer
+			        </label>
+			    </p>
+			    <p class="submit"><input type="submit" name="commit" value="Login"></p>
+			</form>
+
 		</div>
 
 		<!-- preload the images -->
@@ -59,5 +62,7 @@
 <script type='text/javascript' src='js/jquery.js'></script>
 <script type='text/javascript' src='js/jquery.simplemodal.js'></script>
 <script type='text/javascript' src='js/basic.js'></script>
+<script src='js/login.js'></script>
+<script src='js/utils.js'></script>
 </body>
 </html>
