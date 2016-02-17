@@ -21,7 +21,7 @@ app.on('ready', function(){
 
 
     // load the index.html
-    mainWindow.loadURL('file:///' + __dirname + '/app/index.html');
+    mainWindow.loadURL('file:///' + __dirname + '/app/index0.html');
 
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
@@ -30,6 +30,7 @@ app.on('ready', function(){
         mainWindow = null;
     });
 
+    // showLoginForm();
     //load records window
     ipcMain.on('sync-records', function(event, arg) {
         console.log(arg);
@@ -48,6 +49,15 @@ app.on('ready', function(){
         event.returnValue = recordWindow;
     });
 
+    //load records window
+    ipcMain.on('close-main-window', function(event, arg) {
+        mainWindow = null;
+    });
+
 
 
 });
+
+function showLoginForm() {
+
+}

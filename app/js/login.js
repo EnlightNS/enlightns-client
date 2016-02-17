@@ -19,6 +19,11 @@ const BrowserWindow = require('electron').remote.BrowserWindow;
 var listRecords = null;
 var isLoggedIn = false;
 
+
+el = document.getElementById("loginModal");
+el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+
+
 //form event listener
 var form = document.querySelector('form');
 form.addEventListener('submit', function(ev) {
@@ -146,6 +151,7 @@ form.addEventListener('submit', function(ev) {
                     console.log("Logged IN!!!");
                     var recordWindow = ipcRenderer.sendSync('sync-records', 'Loading records');
                     recordWindow.show();
+                    ipcRenderer.sendSync('close-main-window', 'Closing main');
                 }
             ],
                function(err, result) {
