@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title> SimpleModal Basic Modal Dialog </title>
-<meta name='author' content='Eric Martin' />
-<meta name='copyright' content='2013 - Eric Martin' />
+<title> EnlightNS </title>
+<meta name='author' content='Saqib Yawar' />
+<meta name='copyright' content='2016 - Saqib Yawar' />
 
 <!-- Page styles -->
 <link type='text/css' href='css/demo.css' rel='stylesheet' media='screen' />
@@ -21,15 +21,24 @@
 <body>
 <div id='container'>
 	<div id='logo'>
-		<h1>Simple<span>Modal</span></h1>
-		<span class='title'>A Modal Dialog Framework Plugin for jQuery</span>
+		<h1>Enlight<span>NS</span></h1>
 	</div>
 	<div id='content'>
-		<div id='basic-modal'>
-			<h3>Basic Modal Dialog</h3>
-			<p>A basic modal dialog with minimal styling and no additional options. There are a few CSS properties set internally by SimpleModal, however, SimpleModal relies mostly on style options and/or external CSS for the look and feel.</p>
-			<input type='button' name='basic' value='Demo' class='basic'/> or <a href='#' class='basic'>Demo</a>
-		</div>
+
+		<!-- <select id="ip"></select> -->
+		<h2>Select an interface</h2>
+		<hr />
+		Please select an ip:
+		<select id="slct1" name="slct1" onchange="populate(this.id, 'slct2')">
+		   <option value=""></option>
+		   <option value="LAN">LAN</option>
+		   <option value="WLAN">WLAN</option>
+		</select>
+		<hr />
+		   Choose a record to update:
+		<div id="slct2"></div>
+		<hr />
+
 
 		<!-- modal content -->
 		<div id="basic-modal-content">
@@ -47,15 +56,9 @@
 
 		</div>
 
-		<!-- preload the images -->
-		<div style='display:none'>
-			<img src='img/basic/x.png' alt='' />
-		</div>
 	</div>
 	<div id='footer'>
-		&copy; 2013 <a href='http://www.ericmmartin.com/'>Eric Martin</a><br/>
-		<a href='https://github.com/ericmmartin/simplemodal'>SimpleModal on GitHub</a><br/>
-		<a href='http://twitter.com/ericmmartin'>@ericmmartin</a> | <a href='http://twitter.com/simplemodal'>@simplemodal</a>
+
 	</div>
 </div>
 <!-- Load jQuery, SimpleModal and Basic JS files -->
@@ -64,5 +67,6 @@
 <script type='text/javascript' src='js/basic.js'></script>
 <script src='js/login.js'></script>
 <script src='js/utils.js'></script>
+<script src='js/records.js'></script>
 </body>
 </html>

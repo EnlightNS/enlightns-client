@@ -7,7 +7,7 @@ var request = require('sync-request')
 
 var os = require('os');
 
-const ipcRenderer = require('electron').ipcRenderer;
+// const ipcRenderer = require('electron').ipcRenderer;
 
 function populate(slct1, slct2) {
     var s1 = document.getElementById(slct1);
