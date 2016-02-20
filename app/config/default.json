@@ -1,0 +1,24 @@
+{
+  "Api":{
+    "auth":{
+      "host":"api.enlightns.com",
+      "endpoint":"/api-token-auth/",
+      "method":"POST",
+      "URL":"https://api.enlightns.com/api-token-auth/"
+    },
+    "record_list":{
+      "host":"api.enlightns.com",
+      "endpoint":"/user/record/",
+      "method":"GET",
+      "URL":"https://api.enlightns.com/user/record/"
+    },
+    "public_ip":{
+      "method":"GET",
+      "URL":"https://api.enlightns.com/tools/whatismyip/"
+    }
+  },
+  "Config":{
+    "filename":"/.ens-config"
+  }
+
+}
